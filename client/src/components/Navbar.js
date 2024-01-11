@@ -18,10 +18,6 @@ const Navbar = ({isLoggedIn}) => {
     isActive ? linkStyles.activeLink : linkStyles.defaultLink
   )}>Login</NavLink>
 	</>}
-	<NavLink to={"/Admin"}
-	style={ ({isActive}) => (
-    isActive ? linkStyles.activeLink : linkStyles.defaultLink
-  )}>Admin</NavLink> 
 	<NavLink to={"/Cart"}style={ ({isActive}) => (
     isActive ? linkStyles.activeLink : linkStyles.defaultLink
   )}>Cart</NavLink>

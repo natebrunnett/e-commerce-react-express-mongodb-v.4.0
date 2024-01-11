@@ -239,7 +239,7 @@ let sendLink = async (email, magicLink, props) => {
       <Routes>
         <Route path="/" element={<Navigate to="/Categories" />} />
         <Route path="/Login" element={<Login login={login}/>} />
-        <Route path="/Admin" element={<Admin />} />
+        {/* <Route path="/Admin" element={<Admin />} /> */}
         <Route path="/Categories" element={<Products AddToCart={AddToCart} thisProducts={thisProducts}/>} />
         <Route path="/Register" element={<Register />} />
         <Route path="/Cart" element={
