@@ -34,8 +34,6 @@ const send_magic_link = async (email,link,which) => {
 			"from=" + mailOptions.from +
 			"subject=" + mailOptions.subject +
 			"html=" + mailOptions.html )
-			console.log("senderEmail = " + senderEmail)
-			console.log("senderPassword = " + senderPassword)
 			const response = await transport.sendMail(mailOptions)
 			console.log("response=" + response)
 			console.log('Link sent 📬')
