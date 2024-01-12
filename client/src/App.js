@@ -60,6 +60,12 @@ useEffect(()=> {
     }
   }
   getProducts();
+
+  //debug server .env variables
+  console.log("STRIPE PUBLIC KEY= " + apiKey)
+
+
+
 }, [])
 
 useEffect(() => {

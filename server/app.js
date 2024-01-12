@@ -18,37 +18,7 @@ require('dotenv').config({ path: './.env' });
 const PORT = process.env.PORT || 3030;
 mongoose.set('strictQuery', false);
 
-
-// ADMINJS
-
-// first install adminjs and the dependencies
-// npm i adminjs @adminjs/express @adminjs/mongoose  tslib express-formidable express-session
-
-// require adminjs
-// const AdminJS = require('adminjs')
-// // // require express plugin
-// const AdminJSExpress = require('@adminjs/express')
-// // // require mongoose adapter
-// AdminJS.registerAdapter(require("@adminjs/mongoose"));
-// // // Import all the project's models
-// const Customers = require("./models/Customer.js"); // replace this for your model
-// const Products = require("./models/Products.js"); // replace this for your model
-
-// const UsersAdmin = require("./admin/resource_options/users.admin"); // replace this for your model
-// const buildAdminRouter = require("./admin/admin.router");
-
-// const adminOptions = new AdminJS({
-// resources: [Customers, Products, UsersAdmin], // the models must be included in this array
-// rootPath: "/admin"
-// });
-
-// // // initialize adminjs 
-// const admin = new AdminJS(adminOptions,buildAdminRouter)
-// // // build admin route
-// const router = buildAdminRouter(admin);
-// app.use(admin.options.rootPath, router);
-// end ADMINJS
-
+console.log(".env test")
 
 // connecting to mongo and checking if DB is running
 async function connecting(){
