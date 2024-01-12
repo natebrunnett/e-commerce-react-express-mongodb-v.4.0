@@ -28,6 +28,7 @@ const send_magic_link = async (email,link,which) => {
 			html: body
 		}
 		try{
+			console.log("...attempting mail request")
 			const response = await transport.sendMail(mailOptions)
 			console.log('Link sent 📬')
 			// console.log('email= ' + process.env.NODEMAILER_EMAIL)
