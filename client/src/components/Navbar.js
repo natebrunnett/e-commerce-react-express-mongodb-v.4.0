@@ -9,10 +9,6 @@ const Navbar = ({isLoggedIn}) => {
     isActive ? linkStyles.activeLink : linkStyles.defaultLink
   )}>Order</NavLink>
 	{isLoggedIn === false && <>
-	<NavLink to={"/Register"}
-	style={ ({isActive}) => (
-    isActive ? linkStyles.activeLink : linkStyles.defaultLink
-  )}>Register</NavLink>
 	<NavLink to={"/Login"}
 	style={ ({isActive}) => (
     isActive ? linkStyles.activeLink : linkStyles.defaultLink

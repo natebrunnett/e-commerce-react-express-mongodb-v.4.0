@@ -88,6 +88,8 @@ let Login = (props) => {
 	<div className="Login">
 		<NavLink to={"/ForgottenPassword"}>
 			Forgot my password</NavLink>
+		<NavLink to={"/Register"}
+		style={{marginTop: 5}}>Register</NavLink>
 	</div>
 	</>)
 }

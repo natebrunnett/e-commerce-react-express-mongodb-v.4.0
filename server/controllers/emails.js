@@ -16,10 +16,10 @@ const URL = process.env.DOMAIN + '/enter/';
 
 const send_magic_link = async (email,link,which) => {
 	if(which == 'signup'){
-		var subj="<p>Your sign up link</p>",
+		var subj="Your sign up link",
 		body= '<p>Hello friend and welcome to our website. This is your link to confirm your account: '+(URL+email+'/'+link)+ '</p><p>Needless to remind you not to share this link with anyone 🤫</p>'
 	}else{
-		var subj="<p>Your sign in link</p>",
+		var subj="Your sign in link",
 		body= '<p>Hello friend and welcome back. This is your link to sign in to your account: '+(URL+email+'/'+link)+ '</p><p>Needless to remind you not to share this link with anyone 🤫</p>' }
 		const mailOptions = {
 			to: email,
@@ -32,7 +32,7 @@ const send_magic_link = async (email,link,which) => {
 			console.log(
 			"mailOptions=to=" + mailOptions.to +
 			"from=" + mailOptions.from +
-			"subject=" + mailOptions.subj +
+			"subject=" + mailOptions.subject +
 			"html=" + mailOptions.html )
 			console.log("senderEmail = " + senderEmail)
 			console.log("senderPassword = " + senderPassword)
