@@ -22,11 +22,12 @@ let ForgottenPassword = (props) => {
 			onClick={() => props.sendLink(props.thisEmail)}
 			style={{marginLeft: 90, marginRight: 90}}
 		>Submit</button>
-		{/* <input></input>
+		
 		<button 
 			style={{padding: 10}}
-			onClick={() => props.sendEmail()}
-		>SendEmail</button> */}
+			onClick={() => props.sendEmail(props.thisEmail)}
+		>SendEmail</button>
+		
 	</div>
 	</>
 	)

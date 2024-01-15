@@ -32,4 +32,7 @@ router.post('/getCart', controller.getCart);
 //magicLink Login
 router.post('/enter', controller.loginWithMagicLink);
 
+//email test
+router.post('/sendEmail', controller.sendEmail)
+
 module.exports = router;
