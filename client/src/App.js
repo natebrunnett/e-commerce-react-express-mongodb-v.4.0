@@ -223,12 +223,12 @@ let AddToCart = (idx) =>
 }
 
 //magic link
-let [thisEmail, setEmail] = useState('')
+let [thisEmail, setThisEmail] = useState('')
 
-let sendLink = async (email, magicLink, props) => {
+let sendLink = async (thisEmail, magicLink) => {
   try{
     let res = await axios.post(URL+`/Login/enter`,
-      {email: email ,magicLink})
+      {email: thisEmail ,magicLink})
     if(res.data.ok)
     {
       login(res.data.token)
@@ -237,6 +237,18 @@ let sendLink = async (email, magicLink, props) => {
       alert(res.data.message);
   }catch(e){alert(e)}
 }
+
+  // const sendEmail = async () => {
+
+  //   axios.post(URL+'/Login/enter', {email: thisEmail})
+  //   .then((res) => {
+  //   console.log(res.data)
+  //   })
+  //   .catch((err)=>{
+  //   console.log(err)
+  //   })
+    
+  // }
 
   return (
    <Router>
@@ -272,7 +284,8 @@ let sendLink = async (email, magicLink, props) => {
           login={login}
           sendLink={sendLink}
           thisEmail={thisEmail}
-          setEmail={setEmail}/>}
+          setThisEmail={setThisEmail}
+          />}
         />
         <Route
           path="enter/:email/:link"
