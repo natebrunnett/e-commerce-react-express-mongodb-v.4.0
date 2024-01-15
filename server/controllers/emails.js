@@ -6,6 +6,8 @@ const senderPassword = process.env.NODEMAILER_PASSWORD;
 
 const transport = nodemailer.createTransport({
 	service: 'Gmail',
+	port: 465,
+	secure: true,
 	auth: {
 		user: senderEmail,
 		pass: senderPassword,
@@ -28,15 +30,8 @@ const send_magic_link = async (email,link,which) => {
 			html: body
 		}
 		try{
-			console.log("...attempting mail request")
-			console.log(
-			"mailOptions=to=" + mailOptions.to +
-			"from=" + mailOptions.from +
-			"subject=" + mailOptions.subject +
-			"html=" + mailOptions.html )
 			const response = await transport.sendMail(mailOptions)
-			console.log("response=" + response)
-			console.log('Link sent 📬')
+			console.log('Link sent')
 			// console.log('email= ' + process.env.NODEMAILER_EMAIL)
 			// console.log('password= ' + senderPassword)
 			return({ok:true,message:'email sent'})
