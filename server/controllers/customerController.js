@@ -5,6 +5,9 @@ const jwt = require("jsonwebtoken");
 const validator = require("validator");
 const {send_magic_link} = require('./emails.js')
 const { v4: uuidv4 } = require('uuid');
+const nodemailer = require('nodemailer')
+const dotenv = require('dotenv');
+dotenv.config();
 
 class User {
 
