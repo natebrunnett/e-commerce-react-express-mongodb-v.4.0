@@ -51,7 +51,6 @@ let Login = (props) => {
         password: form.password,});
 		if(response.data.ok){
 			//password match
-			alert(response.data.message)
 			//navigate in 2 seconds
 			setTimeout(() => {
 			props.login(
