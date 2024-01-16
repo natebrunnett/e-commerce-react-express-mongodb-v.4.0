@@ -75,7 +75,7 @@ class User {
         const senderEmail = process.env.NODEMAILER_EMAIL;
         const senderPassword = process.env.NODEMAILER_PASSWORD;
 
-        const { email } = req.body;
+        const { email, magicLink } = req.body;
 
 		const user = await Customer.findOne({ 
 			username:email });
@@ -97,32 +97,41 @@ class User {
         });
         // send mail with defined transport object
         try {
+			if(!magicLink){
+				const user = await Customer.findOneAndUpdate(
+					{username:email}, 
+					{MagicLink: uuidv4(), MagicLinkExpired: false}, 
+					{returnDocument:'after'}
+					);
+				
+				const URL = process.env.DOMAIN + '/sendEmail/';
 
-			const user = await Customer.findOneAndUpdate(
-				{username:email}, 
-				{MagicLink: uuidv4(), MagicLinkExpired: false}, 
-				{returnDocument:'after'}
-				);
-			
-			const URL = process.env.DOMAIN + '/enter/';
-
-            const info = await transporter.sendMail({
-                from: senderEmail, // sender address
-                to: email, // list of receivers
-                subject: "Hello ✔", // Subject line
-                text: "Hello world? Test1", // plain text body
-                html: `<p>Hello friend and welcome back. This is your link to sign in to your account: ${URL}${email}/${user.MagicLink}'</p><p>Needless to remind you not to share this link with anyone 🤫</p>`, // html body
-            });
-    
-            console.log("Message sent: %s", info.messageId);
-            res.send({ok: true, message: "Link sent"})
-            // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-    
-            //
-            // NOTE: You can go to https://forwardemail.net/my-account/emails to see your email delivery status and preview
-            //       Or you can use the "preview-email" npm package to preview emails locally in browsers and iOS Simulator
-            //       <https://github.com/forwardemail/preview-email>
-            //
+				const info = await transporter.sendMail({
+					from: senderEmail, // sender address
+					to: email, // list of receivers
+					subject: "Hello ✔", // Subject line
+					text: "Hello world? Test1", // plain text body
+					html: `<p>Hello friend and welcome back. This is your link to sign in to your account: ${URL}${email}/${user.MagicLink}'</p><p>Needless to remind you not to share this link with anyone 🤫</p>`, // html body
+				});
+		
+				console.log("Message sent: %s", info.messageId);
+				res.send({ok: false, message: "Link sent"})
+				// Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+		
+				//
+				// NOTE: You can go to https://forwardemail.net/my-account/emails to see your email delivery status and preview
+				//       Or you can use the "preview-email" npm package to preview emails locally in browsers and iOS Simulator
+				//       <https://github.com/forwardemail/preview-email>
+				//
+			} else if(user.MagicLink == magicLink && !user.MagicLinkExpired){
+				const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET, { expiresIn: "1h" }); //{expiresIn:'365d'}
+				//set the variable to expired, and send back the token
+				await Customer.findOneAndUpdate(
+					{username:email}, 
+					{MagicLinkExpired: true}
+					)
+				res.json({ ok: true, message: "Welcome back", token, email });
+				}
         } catch (error) {
             res.send({ok: false, message: error})
         }

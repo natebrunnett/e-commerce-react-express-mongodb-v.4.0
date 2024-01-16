@@ -16,7 +16,7 @@ export default function Enter(props) {
 	let navigate=useNavigate()
 	
 	useEffect(()=>{
-		props.sendLink(params.email, params.link)
+		props.sendEmail(params.email, params.link)
 		navigate('/Categories')
 	},[])
 

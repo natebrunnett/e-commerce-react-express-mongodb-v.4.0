@@ -238,11 +238,16 @@ let sendLink = async (thisEmail, magicLink) => {
   }catch(e){alert(e)}
 }
 
-  const sendEmail = async () => {
+  const sendEmail = async (paramEmail, magicLink) => {
 
-    axios.post(URL+'/Login/sendEmail', {email: thisEmail})
+    axios.post(URL+'/Login/sendEmail', {email: paramEmail, magicLink})
     .then((res) => {
-    console.log(res.data)
+      if(res.data.ok)
+      {
+        login(res.data.token)
+      }
+      else
+        alert(console.log(res.data.message))
     })
     .catch((err)=>{
     console.log(err)
@@ -289,8 +294,8 @@ let sendLink = async (thisEmail, magicLink) => {
           />}
         />
         <Route
-          path="enter/:email/:link"
-          element={<Enter sendLink={sendLink} thisEmail={thisEmail}/>}
+          path="sendEmail/:email/:link"
+          element={<Enter sendEmail={sendEmail} thisEmail={thisEmail}/>}
         />
       </Routes>
     </Router>
