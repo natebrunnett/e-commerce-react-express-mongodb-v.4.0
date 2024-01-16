@@ -3,7 +3,6 @@ const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 //magic link
 const validator = require("validator");
-const {send_magic_link} = require('./emails.js')
 const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer')
 const dotenv = require('dotenv');
