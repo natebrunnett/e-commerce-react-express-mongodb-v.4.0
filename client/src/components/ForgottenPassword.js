@@ -17,12 +17,7 @@ let ForgottenPassword = (props) => {
 			placeholder="email" 
 			value={props.thisEmail}
 		/>
-		<p style={{padding: 10}}>{props.thisEmail}</p>
-		<button 
-			onClick={() => props.sendLink(props.thisEmail)}
-			style={{marginLeft: 90, marginRight: 90}}
-		>Submit</button>
-		
+
 		<button 
 			style={{padding: 10}}
 			onClick={() => props.sendEmail(props.thisEmail)}

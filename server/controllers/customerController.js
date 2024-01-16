@@ -10,66 +10,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 class User {
-
-	//magiclink
-	async loginWithMagicLink(req, res){
-		const { email, magicLink } = req.body;
-		if (!email){
-			return res.send({ ok: false, message: "All field are required" });
-		}
-		if (!validator.isEmail(email))
-			return res.send({ ok: false, 
-				message: "inavlid email provided"})
-		//if we have a valid email and an email
-		try{
-			//find the username in the db
-			const user = await Customer.findOne({ 
-			username:email });
-			if(!user){
-				//option: add user
-				res.send({ ok: false,
-					message: "username not found"})
-			}else if(!magicLink)
-			{
-				//if magicLink is not passed
-				//into this function
-				//we will send it to the provided email
-				try{
-					//set the magicLink id in the Customerchema
-					//set the magiclink expired to false
-					//send magiclink
-					const user = await Customer.findOneAndUpdate(
-							{username:email}, 
-							{MagicLink: uuidv4(), MagicLinkExpired: false}, 
-							{returnDocument:'after'}
-							);
-		    		// send email with magic link
-					try {
-						send_magic_link(email,user.MagicLink)
-						res.send({ok:false,message:'Please check your inbox'})
-					} catch (error) {
-						console.log(error);
-					}
-				}catch(e){res.send({e, ok: false, 
-					message:"failed to send mail"})}
-				//send back a signed token using user
-			}else if(user.MagicLink == magicLink && !user.MagicLinkExpired) {
-		      const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET, { expiresIn: "1h" }); //{expiresIn:'365d'}
-		      //set the variable to expired, and send back the token
-		      await Customer.findOneAndUpdate(
-		      	{username:email}, 
-		      	{MagicLinkExpired: true}
-		      	)
-		      res.json({ ok: true, message: "Welcome back", token, email });
-		    }
-		} catch(e)
-		{
-			console.log(e)
-		res.send({e, ok:false})}
-		//this same function is used to return
-		//the token to the client
-
-	}
 	
 	async sendEmail(req, res){
         const senderEmail = process.env.NODEMAILER_EMAIL;

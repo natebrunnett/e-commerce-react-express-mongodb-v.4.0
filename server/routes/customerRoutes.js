@@ -29,9 +29,6 @@ router.post('/clear', controller.clearCart);
 //getCart
 router.post('/getCart', controller.getCart);
 
-//magicLink Login
-router.post('/enter', controller.loginWithMagicLink);
-
 //email test
 router.post('/sendEmail', controller.sendEmail)
 

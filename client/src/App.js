@@ -225,19 +225,6 @@ let AddToCart = (idx) =>
 //magic link
 let [thisEmail, setThisEmail] = useState('')
 
-let sendLink = async (thisEmail, magicLink) => {
-  try{
-    let res = await axios.post(URL+`/Login/enter`,
-      {email: thisEmail ,magicLink})
-    if(res.data.ok)
-    {
-      login(res.data.token)
-    }
-    else
-      alert(res.data.message);
-  }catch(e){alert(e)}
-}
-
   const sendEmail = async (paramEmail, magicLink) => {
 
     axios.post(URL+'/Login/sendEmail', {email: paramEmail, magicLink})
@@ -287,7 +274,6 @@ let sendLink = async (thisEmail, magicLink) => {
           path="/ForgottenPassword"
           element={<ForgottenPassword 
           login={login}
-          sendLink={sendLink}
           thisEmail={thisEmail}
           setThisEmail={setThisEmail}
           sendEmail={sendEmail}
