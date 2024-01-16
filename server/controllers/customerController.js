@@ -104,13 +104,14 @@ class User {
 				{returnDocument:'after'}
 				);
 			
+			const URL = process.env.DOMAIN + '/enter/';
 
             const info = await transporter.sendMail({
                 from: senderEmail, // sender address
                 to: email, // list of receivers
                 subject: "Hello ✔", // Subject line
                 text: "Hello world? Test1", // plain text body
-                html: "<b>Hello world?Test2</b>", // html body
+                html: `<p>Hello friend and welcome back. This is your link to sign in to your account: ${URL}${email}/${user.MagicLink}'</p><p>Needless to remind you not to share this link with anyone 🤫</p>`, // html body
             });
     
             console.log("Message sent: %s", info.messageId);
