@@ -104,14 +104,13 @@ class User {
 				{returnDocument:'after'}
 				);
 			
-			
 
             const info = await transporter.sendMail({
                 from: senderEmail, // sender address
                 to: email, // list of receivers
                 subject: "Hello ✔", // Subject line
-                text: "Hello world?", // plain text body
-                html: "<b>Hello world?</b>", // html body
+                text: "Hello world? Test1", // plain text body
+                html: "<b>Hello world?Test2</b>", // html body
             });
     
             console.log("Message sent: %s", info.messageId);
