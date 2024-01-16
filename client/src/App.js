@@ -234,7 +234,7 @@ let [thisEmail, setThisEmail] = useState('')
         login(res.data.token)
       }
       else
-        alert(console.log(res.data.message))
+        alert(res.data.message)
     })
     .catch((err)=>{
     console.log(err)

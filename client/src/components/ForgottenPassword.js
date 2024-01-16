@@ -16,6 +16,7 @@ let ForgottenPassword = (props) => {
 			onChange={handleChange} 
 			placeholder="email" 
 			value={props.thisEmail}
+			type="email"
 		/>
 
 		<button 
