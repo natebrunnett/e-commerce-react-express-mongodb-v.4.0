@@ -103,15 +103,15 @@ class User {
 				{MagicLink: uuidv4(), MagicLinkExpired: false}, 
 				{returnDocument:'after'}
 				);
-
-			const URL = process.env.DOMAIN + '/enter/';
+			
+			
 
             const info = await transporter.sendMail({
                 from: senderEmail, // sender address
                 to: email, // list of receivers
                 subject: "Hello ✔", // Subject line
-                // text: "Hello world?", // plain text body
-                html: '<p>Hello friend and welcome back. This is your link to sign in to your account: '+(URL+email+'/'+user.MagicLink)+ '</p><p>Needless to remind you not to share this link with anyone </p>', // html body
+                text: "Hello world?", // plain text body
+                html: "<b>Hello world?</b>", // html body
             });
     
             console.log("Message sent: %s", info.messageId);
