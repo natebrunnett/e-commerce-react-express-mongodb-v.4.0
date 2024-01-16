@@ -51,7 +51,7 @@ let Login = (props) => {
         password: form.password,});
 		if(response.data.ok){
 			//password match
-			console.log(response.data)
+			alert(response.data.message)
 			//navigate in 2 seconds
 			setTimeout(() => {
 			props.login(
@@ -59,8 +59,7 @@ let Login = (props) => {
 			navigate('/Categories')
 			}, 10);
 		}else{
-			console.log("data false")
-			console.log(response.data)}
+			alert(response.data.message)}
 		}
 		catch(error){console.log(error)}
 	}
