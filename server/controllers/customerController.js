@@ -70,21 +70,20 @@ class User {
 		//the token to the client
 
 	}
-
-	async findAllUsers(req, res){
-		try{
-			const user = await Customer.find({});
-			res.send(user)
-		}catch(e){
-			res.send({e})
-		}
-	}
 	
 	async sendEmail(req, res){
         const senderEmail = process.env.NODEMAILER_EMAIL;
         const senderPassword = process.env.NODEMAILER_PASSWORD;
 
         const { email } = req.body;
+
+		const user = await Customer.findOne({ 
+			username:email });
+		
+		if(!user){
+			res.send({ ok: false,
+				message: "username not found"})
+		}
 
         const transporter = nodemailer.createTransport({
             service: "Gmail",
@@ -98,12 +97,21 @@ class User {
         });
         // send mail with defined transport object
         try {
+
+			const user = await Customer.findOneAndUpdate(
+				{username:email}, 
+				{MagicLink: uuidv4(), MagicLinkExpired: false}, 
+				{returnDocument:'after'}
+				);
+
+			const URL = process.env.DOMAIN + '/enter/';
+
             const info = await transporter.sendMail({
                 from: senderEmail, // sender address
                 to: email, // list of receivers
                 subject: "Hello ✔", // Subject line
-                text: "Hello world?", // plain text body
-                html: "<b>Hello world?</b>", // html body
+                // text: "Hello world?", // plain text body
+                html: '<p>Hello friend and welcome back. This is your link to sign in to your account: '+(URL+email+'/'+user.MagicLink)+ '</p><p>Needless to remind you not to share this link with anyone </p>', // html body
             });
     
             console.log("Message sent: %s", info.messageId);
@@ -119,6 +127,15 @@ class User {
             res.send({ok: false, message: error})
         }
     }
+
+	async findAllUsers(req, res){
+		try{
+			const user = await Customer.find({});
+			res.send(user)
+		}catch(e){
+			res.send({e})
+		}
+	}
 
 	async addUser(req,res){
 		//creat salt for the hash
