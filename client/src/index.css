@@ -219,3 +219,15 @@ button {
 .remove {
   display: inline-grid;
 }
+
+@media all and (max-width: 800px){
+  .productGrid {
+    display:flex;
+    gap: 12px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+  }
+  
+}
