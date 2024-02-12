@@ -207,14 +207,13 @@ let [thisEmail, setThisEmail] = useState('')
           <Elements stripe={stripePromise}>
             <Cart 
             removeFromCart={removeFromCart} cart={cart}
-            getCart={getCart} user={user}
+            getCart={getCart} user={user} setCart={setCart}
             />
           </Elements>
         } />
         <Route
           path="/payment/success"
           element={<PaymentSuccess
-          setCart={setCart} user={user}
           />}
         />
         <Route

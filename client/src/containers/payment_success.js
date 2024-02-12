@@ -4,7 +4,7 @@ import axios from "axios";
 import URL from '../config.js';
 
 
-const PaymentSuccess = (props) => {
+const PaymentSuccess = () => {
   useEffect(() => {
     const getSessionData = async () => {
       // 11. Now when payment was successful we need to get back to Stripe to know what was paid for and who is the customer
@@ -31,29 +31,6 @@ const PaymentSuccess = (props) => {
     };
     getSessionData();
   }, []);
-
-  useEffect(()=> {
-    const clearCart = async () => {
-      try{
-        props.setCart([]);
-        const response = await axios.post(
-          URL+`/Login/clear`, {username: props.user}
-        );
-        console.log(response);
-    //props.setCart
-    //and also in the db
-    //axios request to db to remove the cart
-    //userController needs clearCart route 
-
-      }catch(e){
-        console.log("clear cart catching")}
-    }
-    //execute here
-    if(props.user){
-      console.log("clearing cart for..." + props.user); 
-      clearCart(); 
-    }
-  }, [props.user])
 
   return (
     <div className="message_container">

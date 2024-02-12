@@ -18,24 +18,41 @@ let Cart = (props) => {
     return total;
   };
 
+  const clearCart = async () => {
+    try{
+      props.setCart([]);
+      const response = await axios.post(
+        URL+`/Login/clear`, {username: props.user}
+      );
+      console.log(response);
+  //props.setCart
+  //and also in the db
+  //axios request to db to remove the cart
+  //userController needs clearCart route 
+
+    }catch(e){
+      console.log("clear cart error")}
+  }
+
     // 1. When we click PAY button this function triggers first
   const createCheckoutSession = async () => {
     try {
-      debugger;
       // 2. Sending request to the create_checkout_session controller and passing products to be paid for
       const response = await axios.post(
         URL+`/payment/create-checkout-session`,
         { products: props.cart }
       );
-      return response.data.ok
-        ? // we save session id in localStorage to get it later
-          (localStorage.setItem(
-            "sessionId",
-            JSON.stringify(response.data.sessionId)
-          ),
-          // 9. If server returned ok after making a session we run redirect() and pass id of the session to the actual checkout / payment form
-          redirect(response.data.sessionId))
-        : navigate("/payment/error");
+      if(response.data.ok){
+        localStorage.setItem(
+          "sessionId",
+          JSON.stringify(response.data.sessionId)
+        )
+        clearCart();
+        redirect(response.data.sessionId)
+      }
+      else {
+        navigate("/payment/error");
+      }
     } catch (error) {
       navigate("/payment/error");
     }
