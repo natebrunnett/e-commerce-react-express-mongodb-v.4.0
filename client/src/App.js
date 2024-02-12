@@ -31,10 +31,6 @@ import URL from './config.js';
 
 function App() {
 
-// useEffect(()=>{
-//   console.log("URL"+ URL)
-// },[])
-
 const [isLoggedIn, setIsLoggedIn] = useState(false);
 const [user, setUser] = useState(null)
 const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")));
@@ -60,11 +56,6 @@ useEffect(()=> {
     }
   }
   getProducts();
-
-  //debug server .env variables
-  console.log("STRIPE PUBLIC KEY= " + apiKey)
-
-
 
 }, [])
 
@@ -144,31 +135,6 @@ let login = (token) => {
 }
 
 
-  // let thisProducts = [
-  // { 
-  // image: [sundubu],
-  // name: "Sundubu Jjigae Tofu Stew",
-  // description: "Spicey soup with tofu, mushrooms, clams and vegetables",
-  // price: 1599, 
-  // quantity: 1
-  // },
-  // { 
-  // image: [injeolmi],
-  // name: "Injeolmi",
-  // description: "Brown sugar rice cakes. Dessert dish or appetizer! 6 pieces.",
-  // price: 799,
-  // quantity: 1
-  // },
-  // {
-  // image: [bulgogi],
-  // name: "Bulgogi Beef Dish",
-  // description: "Rib-eye beef 600 grams",
-  // price: 1699,
-  // quantity: 1
-  // }
-  // ];
-
-
 //after a payment, plug id: all into this function and we will call a delete all function in the controller if id === all 
 let removeFromCart = (thisId) => {
   axios.post(URL+'/Login/deleteCartItem', 
@@ -181,21 +147,6 @@ let removeFromCart = (thisId) => {
       console.log(err)
     })
 }
-
-  // let updateCart=()=>{
-  //   axios.post('http://localhost:3030/Login/update', 
-  //     {username:inputUpdate, product: inputNewPass})
-  //   .then((res) => {
-  //     console.log(res.data)
-  //     setInputUpdate('');
-  //     setInputNewPass('');
-  //   })
-  //   .catch((err)=>{
-  //     console.log(err)
-  //   })
-  // }
-
-//user must be logged in to click button
 
 let AddToCart = (idx) =>
 {

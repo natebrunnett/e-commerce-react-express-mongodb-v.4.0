@@ -14,13 +14,9 @@ app.use(cors())
 
 require('dotenv').config({ path: './.env' });
 
-/*Cyclic*/
 const PORT = process.env.PORT || 3030;
 mongoose.set('strictQuery', false);
 
-console.log(".env test")
-
-// connecting to mongo and checking if DB is running
 async function connecting(){
 try {
     await mongoose.connect(process.env.MONGO)
@@ -30,17 +26,15 @@ try {
 }
 }
 connecting()
-// end of connecting to mongo and checking if DB is running
 
 app.use('/payment', require('./routes/payment.route.js'));
 app.use('/Login', customerRoutes);
 app.use('/Products', productRoutes);
 const path = require('path');
-// we need to import 'path' module from node.js
 
 app.use('/assets', express.static(path.join(__dirname, 'static')))
 
-/*cyclic*/
+/*cyclic start*/
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, '../client/build')));
 
@@ -48,8 +42,6 @@ app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
-/**/
-
-
+/*cyclic end*/
 
 app.listen(PORT, () => console.log(`listening on port`))

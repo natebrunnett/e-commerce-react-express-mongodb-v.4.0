@@ -7,12 +7,6 @@ import URL from '../config.js';
 let Admin = () => {
   const [users, setUsers] = useState([]);
   const [inputRemove, setInputRemove] = useState('');
-  // const [form, setValues] = useState({
-  //   username: "",
-  //   password: "",
-  // });
-
-
 
   let getUsers = () => {
     axios.get(URL+'/Login')
@@ -46,19 +40,6 @@ let Admin = () => {
       console.log(err)
     })
   }
-
-  // let updateCart=()=>{
-  //   axios.post('http://localhost:3030/Login/update', 
-  //     {username:inputUpdate, product: inputNewPass})
-  //   .then((res) => {
-  //     console.log(res.data)
-  //     setInputUpdate('');
-  //     setInputNewPass('');
-  //   })
-  //   .catch((err)=>{
-  //     console.log(err)
-  //   })
-  // }
 
   return(
   <>
