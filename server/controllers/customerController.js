@@ -106,6 +106,7 @@ class User {
 		}
 		catch(e){
 			res.send({ok: false, e, message: "error"});
+			console.log(e);
 		}
 	}
 

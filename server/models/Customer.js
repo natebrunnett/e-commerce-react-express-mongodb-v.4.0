@@ -15,7 +15,7 @@ const SubSchema = new mongoose.Schema({
   description: { type: String },
   price: { type: Number },
   quantity: { type: Number },
-  id: { type: String, unique: true, default: uuidv4, } // Automatically generate object IDs
+  id: { type: String, default: uuidv4, } // Automatically generate object IDs
 });
 
 
