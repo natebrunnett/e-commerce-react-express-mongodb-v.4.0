@@ -39,6 +39,7 @@ function App() {
   const apiKey = process.env.REACT_APP_STRIPE_PUBLIC_KEY;
   const stripePromise = loadStripe(apiKey);
   //Account Recovery
+  const [setMsg, msg] = useState('');
   const sendEmail = async (paramEmail, magicLink) => {
 
     axios.post(URL+'/Guest/sendEmail', {email: paramEmail, magicLink})
@@ -48,7 +49,7 @@ function App() {
         loginHandle(res.data.token)
       }
       else{
-        console.log(res.data.message)
+        setMsg(res.data.message)
     }})
     .catch((err)=>{
     console.log(err)
@@ -149,9 +150,12 @@ so I pass navbar as true in most other views */
         path="/AccountRecovery"
         element={<AccountRecovery 
         sendEmail={sendEmail}
-        setNav={setNav}
-      />}
-    />
+        setNav={setNav}/>}
+      />
+      <Route
+          path="sendEmail/:email/:link"
+          element={<Enter sendEmail={sendEmail} msg={msg}/>}
+        />
     </Routes>
    </Router>
   );

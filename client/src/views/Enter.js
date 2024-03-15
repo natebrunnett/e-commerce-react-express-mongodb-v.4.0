@@ -11,12 +11,12 @@ border-color: red;
 `;
 // end spinners import stuff
 
-export default function Enter(props) {
+export default function Enter({sendEmail}) {
 	let params = useParams();
 	let navigate=useNavigate()
 	
 	useEffect(()=>{
-		props.sendEmail(params.email, params.link)
+		sendEmail(params.email, params.link)
 		navigate('/Categories')
 	},[])
 

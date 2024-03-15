@@ -2,7 +2,7 @@ import axios from "axios";
 import {useState, useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
 
-let ForgottenPassword = ({setNav, sendEmail}) => {
+let ForgottenPassword = ({setNav, sendEmail, msg}) => {
 
 	useEffect(()=>{
 		setNav(true);
@@ -33,6 +33,9 @@ let ForgottenPassword = ({setNav, sendEmail}) => {
 		>SendEmail</button>
 		<p className="italic w-96 text-center mt-5">
 			Developer note - this will use nodemailer to send you a login link to your email
+		</p>
+		<p className="text-sm text-red-500 text-center italic mt-5">
+			{msg}
 		</p>
 	</div>
 	</>
