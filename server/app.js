@@ -1,14 +1,13 @@
 const express = require('express'), 
 app = express(),
-mongoose = require('mongoose'), 
-customerRoutes = require('./routes/customerRoutes.js');
-productRoutes = require('./routes/productRoutes.js')
+mongoose = require('mongoose');
 
-// to print incoming requests from mongoose in the terminal
+//console.log prints to gitbash terminal 
 mongoose.set('debug',true)
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 
+//get req.body
 const cors = require('cors')
 app.use(cors())
 
@@ -28,10 +27,11 @@ try {
 connecting()
 
 app.use('/payment', require('./routes/payment.route.js'));
-app.use('/Login', customerRoutes);
-app.use('/Products', productRoutes);
+app.use('/Guest', require('./routes/guestRoutes.js'));
+app.use('/Products', require('./routes/productRoutes.js'));
 const path = require('path');
 
+//images are stored in server folder not client
 app.use('/assets', express.static(path.join(__dirname, 'static')))
 
 /*cyclic start*/
@@ -41,7 +41,6 @@ app.use(express.static(path.join(__dirname, '../client/build')));
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
-
 /*cyclic end*/
 
-app.listen(PORT, () => console.log(`listening on port`))
+app.listen(PORT, () => console.log(`listening on port ${PORT}`))

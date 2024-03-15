@@ -1,4 +1,3 @@
-import './App.css';
 import {useState} from 'react';
 import {useEffect} from 'react';
 import axios from 'axios';
@@ -8,233 +7,153 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import Login from "./components/Login"
-import Admin from "./components/Admin"
-import Navbar from "./components/Navbar.js"
-import Products from "./components/Products.js"
-import Register from "./components/Register"
-import Cart from "./components/Cart"
-import * as jose from "jose";
+
+import URL from './components/config'
+import LandingPage from './views/LandingPage'
+import Navbar from './components/Navbar';
+import Menu from './views/Menu'
+import Cart from './views/Cart'
+import Login from './views/Login'
+import Register from './views/Register'
+import * as jose from 'jose'
 
 //stripe
 import {loadStripe} from '@stripe/stripe-js';
 import {Elements} from '@stripe/react-stripe-js';
-import PaymentSuccess from "./containers/payment_success";
-import PaymentError from "./containers/payment_error";
+import PaymentSuccess from "./stripe/payment_success";
+import PaymentError from "./stripe/payment_error";
 
-//magicLink
-import Enter from './components/Enter.js'
-import ForgottenPassword from "./components/ForgottenPassword.js"
-
-//config
-import URL from './config.js';
+//magicLink || Account Recovery
+import Enter from './views/Enter.js'
+import AccountRecovery from "./views/AccountRecovery.js"
 
 function App() {
+  const [displayNav, setNav] = useState(false);
+  const [user, setUser] = useState(null);
+  const [myCart, setCart] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")));
+  //products from db
+  const [MenuList, setMenu] = useState([]);
+  //stripe
+  const apiKey = process.env.REACT_APP_STRIPE_PUBLIC_KEY;
+  const stripePromise = loadStripe(apiKey);
+  //Account Recovery
+  const sendEmail = async (paramEmail, magicLink) => {
 
-const [isLoggedIn, setIsLoggedIn] = useState(false);
-const [user, setUser] = useState(null)
-const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")));
-const [cart, setCart] = useState([]);
-
-//stripe
-const apiKey = process.env.REACT_APP_STRIPE_PUBLIC_KEY
-const stripePromise = loadStripe(apiKey);
-
-//products from db
-const [thisProducts, setProducts] = useState([]);
-
-useEffect(()=> {
-  const getProducts = async () => {
+    axios.post(URL+'/Guest/sendEmail', {email: paramEmail, magicLink})
+    .then((res) => {
+      if(res.data.ok)
+      {
+        loginHandle(res.data.token)
+      }
+      else{
+        console.log(res.data.message)
+    }})
+    .catch((err)=>{
+    console.log(err)
+    })
+    
+  }
+  //Get menuItems from Mongodb
+  useEffect(()=> {
+    const getMenu = async () => {
     try{
-      console.log("trying products, Hello World");
       const response = await axios.get(URL+'/Products/');
       //console.log(response)
-      setProducts(response.data);
+      setMenu(response.data);
     }catch(e){  
       console.log("request to " + URL + "failed")
       console.log(e)
     }
   }
-  getProducts();
-
-}, [])
-
-useEffect(() => {
+  getMenu();
+  //Verify LocalStorage token
   const verify_token = async () => {
     try {
       if(!token){
-        setIsLoggedIn(false)
-        console.log("no token")
-        console.log(token)
+        setUser("guest@gmail.com");
+        console.log("token not found")
       } else {
-        console.log("token found")
         axios.defaults.headers.common["Authorization"] = token;
-        const response = await axios.post(URL+'/Login/verifyToken');
+        const response = await axios.post(URL+'/Guest/verifyToken');
         //console.log(response);
-        return response.data.ok ? login(token) : logout();
+        return response.data.ok ? loginHandle(token) : logout();
       }
     }catch(error){
       console.log(error)
     }
   }
   verify_token();
-  console.log("useEffect1=" + user)
-}, [token]);
 
-const getCart = async () => {
-    axios.post(URL+'/Login/getCart', 
-      {username:user})
-    .then((res) => {
-      // console.log("user " + user)
-      // console.log("res: " + res.data)
-      if (res.data !== "cannot find user") setCart(res.data);
-    })
-    .catch((err)=>{
-      console.log("cart failing" + err)
-    })
-  }
-
-useEffect(()=>{
-  console.log("useEffect2=" + user)
-  if(user) getCart();
-}, [user])
-
-let UserInfo = () => {
-  return (
-    <>
-      {
-        isLoggedIn === true && <> 
-        <div className="UserInfo">
-        <p><b>{user}</b></p>
-        <button onClick={logout}>logout</button>
-        </div> 
-        </>
-      }
-    </>
-  );
-}
-
-let checkToken = () => {
-  console.log(token)
-}
+}, [])
 
 let logout = () => {
   localStorage.removeItem("token");
-  setUser(null);
+  setUser('guest@gmail.com');
   setIsLoggedIn(false);
   setCart([]);
   alert("You have logged out");
 }
 
-let login = (token) => {
+let loginHandle = (token) => {
   let decodedToken = jose.decodeJwt(token);
   setUser(decodedToken.username);
+  (decodedToken.cart.length > 0) ? setCart(decodedToken.cart) : setCart([])
   setIsLoggedIn(true);
   localStorage.setItem("token", JSON.stringify(token));
-  alert('Welcome back!')
 }
 
-
-//after a payment, plug id: all into this function and we will call a delete all function in the controller if id === all 
-let removeFromCart = (thisId) => {
-  axios.post(URL+'/Login/deleteCartItem', 
-      {username:user, id: thisId})
-    .then((res) => {
-      setCart(res.data);
-      alert("Dish removed");
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
-}
-
-let AddToCart = (idx) =>
-{
-  if(isLoggedIn){
-  let newItem = {}
-  newItem = thisProducts[parseInt(idx.idx)];
-  //axios post will add newItem to cart in db
-  //then it will return the updated cart
-  //setCart with the newcart response
-  axios.post(URL+'/Login/update', 
-      {username:user, product: newItem})
-    .then((res) => {
-      setCart(res.data);
-      alert("Dish added to your cart")
-      console.log(cart);
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
-  }
-  else{
-    alert("Please login to continue")
-  }
-  
-}
-
-//magic link
-let [thisEmail, setThisEmail] = useState('')
-
-  const sendEmail = async (paramEmail, magicLink) => {
-
-    axios.post(URL+'/Login/sendEmail', {email: paramEmail, magicLink})
-    .then((res) => {
-      if(res.data.ok)
-      {
-        login(res.data.token)
-      }
-      else
-        alert(res.data.message)
-    })
-    .catch((err)=>{
-    console.log(err)
-    })
-    
-  }
+/* I have an issue in React where, I can't hide the navbar on the landing page,
+so I pass navbar as true in most other views */
 
   return (
    <Router>
-      <UserInfo />
-      <Navbar isLoggedIn={isLoggedIn}/>
-      <Routes>
-        <Route path="/" element={<Navigate to="/Categories" />} />
-        <Route path="/Login" element={<Login login={login}/>} />
-        {/* <Route path="/Admin" element={<Admin />} /> */}
-        <Route path="/Categories" element={<Products AddToCart={AddToCart} thisProducts={thisProducts}/>} />
-        <Route path="/Register" element={<Register />} />
-        <Route path="/Cart" element={
-          <Elements stripe={stripePromise}>
-            <Cart 
-            removeFromCart={removeFromCart} cart={cart}
-            getCart={getCart} user={user} setCart={setCart}
-            />
-          </Elements>
-        } />
-        <Route
-          path="/payment/success"
-          element={<PaymentSuccess
-          />}
-        />
-        <Route
-          path="/payment/error"
-          element={<PaymentError />}
-        />
-        <Route
-          path="/ForgottenPassword"
-          element={<ForgottenPassword 
-          login={login}
-          thisEmail={thisEmail}
-          setThisEmail={setThisEmail}
-          sendEmail={sendEmail}
-          />}
-        />
-        <Route
-          path="sendEmail/:email/:link"
-          element={<Enter sendEmail={sendEmail} thisEmail={thisEmail}/>}
-        />
-      </Routes>
-    </Router>
+    <Navbar displayNav={displayNav}/>
+    <Routes>
+      <Route
+      path={'/'}
+      element={<LandingPage setNav={setNav}/>}
+      />
+      <Route 
+      path={'/Menu'}
+      element={<Menu MenuList={MenuList} logout={logout} setCart={setCart} user={user} setNav={setNav}/>}
+      />
+      <Route
+      path={'/Cart'}
+      element={
+        <Elements stripe={stripePromise}>
+          <Cart myCart={myCart} setCart={setCart} user={user} setNav={setNav}/>
+        </Elements>
+      }
+      />
+      <Route
+      path={'/Login'}
+      element={<Login setNav={setNav} loginHandle={loginHandle}/>}
+      />
+      <Route
+      path={'/Register'}
+      element={<Register setNav={setNav} loginHandle={loginHandle}/>}
+      />
+      <Route
+        path="/payment/success"
+        element={<PaymentSuccess
+        setCart={setCart} 
+        />}
+      />
+      <Route
+        path="/payment/error"
+        element={<PaymentError />}
+      />
+      <Route
+        path="/AccountRecovery"
+        element={<AccountRecovery 
+        sendEmail={sendEmail}
+        setNav={setNav}
+      />}
+    />
+    </Routes>
+   </Router>
   );
 }
 
