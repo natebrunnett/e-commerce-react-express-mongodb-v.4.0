@@ -150,11 +150,13 @@ so I pass navbar as true in most other views */
         path="/AccountRecovery"
         element={<AccountRecovery 
         sendEmail={sendEmail}
-        setNav={setNav}/>}
+        setNav={setNav}
+        msg={msg}
+        />}
       />
       <Route
           path="sendEmail/:email/:link"
-          element={<Enter sendEmail={sendEmail} msg={msg}/>}
+          element={<Enter sendEmail={sendEmail} />}
         />
     </Routes>
    </Router>

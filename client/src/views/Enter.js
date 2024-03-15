@@ -17,7 +17,7 @@ export default function Enter({sendEmail}) {
 	
 	useEffect(()=>{
 		sendEmail(params.email, params.link)
-		navigate('/Categories')
+		navigate('/Menu')
 	},[])
 
 	return (
