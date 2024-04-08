@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import URL from '../components/config.js'
 import axios from 'axios'
 import * as jose from 'jose'
+import { FaShoppingCart } from "react-icons/fa";
 
 let Menu = ({MenuList, setCart, setNav, user, logout}) => {
 
@@ -59,13 +60,14 @@ let Menu = ({MenuList, setCart, setNav, user, logout}) => {
 	
     return (
 	<>
-
-    <div className='flex flex-col items-center'>
-    <h1 className='mb-3 mt-3'>Hello, {user}</h1>
-    {(user == 'guest@gmail.com')? <button className='bg-amber-700 p-4 rounded-3xl text-white' onClick={() => navigate('/Login')}>Log in</button> : <button  
-    className='bg-amber-700 p-4 rounded-3xl text-white' onClick={()=>logout()}>Logout</button>}
-    <h1 className='font-bold text-4xl mb-3'>Order now :)</h1>
+    <div className='flex flex-row items-center justify-center cursor-pointer mt-3
+     bg-orange-500 w-24 h-24 pr-1 rounded-full bottom-1 right-1 fixed' onClick={() => navigate('/Cart')}>
+        <FaShoppingCart size={"32px"}/>
+    </div>
+    <div className='flex flex-row items-center justify-center gap-3 mt-2 mb-2'>
+        <h1 className='mb-3 mt-3'>Hello, {user}</h1>
 	</div>
+    <h1 className='font-bold text-4xl mb-3 text-center'>Order now 🫡</h1>
 	{renderProducts()}
 
 	

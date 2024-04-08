@@ -110,7 +110,7 @@ so I pass navbar as true in most other views */
 
   return (
    <Router>
-    <Navbar displayNav={displayNav}/>
+    <Navbar displayNav={displayNav} user={user} logout={logout}/>
     <Routes>
       <Route
       path={'/'}
