@@ -39,7 +39,7 @@ function App() {
   const apiKey = process.env.REACT_APP_STRIPE_PUBLIC_KEY;
   const stripePromise = loadStripe(apiKey);
   //Account Recovery
-  const [setMsg, msg] = useState('');
+  const [msg, setMsg] = useState('');
   const sendEmail = async (paramEmail, magicLink) => {
 
     axios.post(URL+'/Guest/sendEmail', {email: paramEmail, magicLink})

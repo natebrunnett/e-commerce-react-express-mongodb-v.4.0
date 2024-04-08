@@ -8,13 +8,13 @@ const Navbar = ({displayNav}) => {
   <>
   {displayNav &&
     <div className="flex flex-row bg-black justify-between items-center">
-    <NavLink to={"/Menu"} className="text-3xl font-bold flex items-center gap-1 pt-1 pb-1"
+    <NavLink to={"/Menu"} className="text-3xl font-bold flex items-center gap-1 pt-1 pb-1 pl-3"
     style={ ({isActive}) => (
       isActive ? linkStyles.activeLink : linkStyles.defaultLink
     )}>Entrees<MdRestaurantMenu size={"32px"}/>
     </NavLink>
 
-    <NavLink to={"/Cart"} className="text-3xl font-bold flex items-center gap-1 pr-2 pt-1 pb-1"
+    <NavLink to={"/Cart"} className="text-3xl font-bold flex items-center gap-1 pr-2 pt-1 pb-1 pr-3"
     style={ ({isActive}) => (
       isActive ? linkStyles.activeLink : linkStyles.defaultLink
     )}><FaShoppingCart size={"32px"}/>Cart

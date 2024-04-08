@@ -21,10 +21,11 @@ let Menu = ({MenuList, setCart, setNav, user, logout}) => {
                     <img className="w-96 rounded-3xl" src={prod.image[0]} />
                     <button className=' bg-amber-700 text-white p-3 absolute mt-80 rounded-3xl' 
                     onClick={() => AddToCart(idx)}>Add to cart</button>	
-                    <div className="" ><b>{prod.name}</b></div>
-                    <p style={{ fontSize: '14px'}}><b>{thisPrice}€</b></p>
-                    <p className="" >{prod.description}</p>
-                    <p>Quantity: {prod.quantity}</p>
+                    
+                    <div className="mt-2 text-2xl italic" ><b>{prod.name}</b></div>
+                    <p className='italic text-2xl'>{thisPrice}€</p>
+                    <p className="w-96 text-center" >{prod.description}</p>
+                    <p className='italic text-sm'>Quantity: {prod.quantity}</p>
 
                 </div>
             )
